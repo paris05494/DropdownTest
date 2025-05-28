@@ -13,13 +13,12 @@
     </Window.DataContext>
 
     <StackPanel Margin="10">
-        <!-- แก้ไข: ลบ PlaceholderText -->
-        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 10"/>
 
         <ComboBox 
             IsEditable="True" 
             ItemsSource="{Binding FilteredItems}"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            SelectedValue="{Binding SelectedId}"
+            SelectedValuePath="Id"
             SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
             DisplayMemberPath="Name"/>
 

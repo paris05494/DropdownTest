@@ -17,7 +17,7 @@ namespace Dropdown.ViewModels
         private BaseUnit _selectedItem;
         private int _selectedIndex;
 
-        public ObservableCollection<BaseUnit> AllItems { get; set; }
+        public List<BaseUnit> AllItems { get; set; }
         public ObservableCollection<BaseUnit> FilteredItems { get; set; }
 
         public string SearchText
@@ -29,7 +29,7 @@ namespace Dropdown.ViewModels
                 {
                     _searchText = value;
                     OnPropertyChanged();
-                    FilterItems();
+                    FilterItems(SearchText);
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace Dropdown.ViewModels
 
         public MainVM()
         {
-            AllItems = new ObservableCollection<BaseUnit>
+            AllItems = new List<BaseUnit>
             {
                 new BaseUnit { Id = 1, Name = "Apple" },
                 new BaseUnit { Id = 2, Name = "Banana" },
@@ -73,12 +73,17 @@ namespace Dropdown.ViewModels
             FilteredItems = new ObservableCollection<BaseUnit>(AllItems);
         }
 
-        private void FilterItems()
+        public void FilterItems(string keyword)
         {
+            var filtered = AllItems
+                .Where(item => item.Name.ToLower().Contains(keyword.ToLower()))
+                .ToList();
+
             FilteredItems.Clear();
-            foreach (var item in AllItems.Where(i => string.IsNullOrWhiteSpace(SearchText) || i.Name.ToLower().Contains(SearchText.ToLower())))
+            foreach (var item in filtered)
                 FilteredItems.Add(item);
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
